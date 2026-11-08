@@ -6,11 +6,41 @@ Export iTunes Library XML data to CSV
 
 I wanted to do a clean-up of my library. iTunes allows you to copy and paste from iTunes into a spreadsheet, but this only includes visible columns. For non-visible columns such as location you need to parse the XML.
 
-## Installation
+## Windows app (no command line needed)
+
+There is a simple window for exporting without typing any commands:
+
+1. Install Ruby from [rubyinstaller.org](https://rubyinstaller.org/). The recommended
+   download with the default options is fine.
+2. On this project's GitHub page, click **Code → Download ZIP**, and unzip it anywhere.
+3. Double-click **`itunes_csv_gui.bat`** in the unzipped folder.
+
+The first time, a black window appears for a minute while it installs the parts it needs
+(this needs an internet connection). After that it opens straight away.
+
+In the window:
+
+1. **iTunes library file**: this is filled in automatically if your library is in the usual
+   place. Otherwise click **Browse…** and choose your `iTunes Library.xml` file
+   (see [Where it looks for your library](#where-it-looks-for-your-library)).
+2. **Fields to include**: tick the columns you want in the spreadsheet. **Select all** and
+   **Select none** tick or clear them all.
+3. Click **Export CSV…**, choose where to save the file, and it tells you how many tracks were
+   exported. The CSV opens in Excel or any spreadsheet program.
+
+Exporting a very large library (tens of thousands of tracks) can take ten seconds or more.
+
+You can also start the window from a terminal with `bundle exec ruby bin/itunes_csv_gui`.
+
+## Command line installation
 
     $ gem install itunes_csv
 
-## Usage
+Note: this installs the original version from rubygems.org, which does not include the
+changes in this fork. To use this version from the command line, download it as above and
+run `bundle install`, then `bundle exec ruby bin/itunes_csv` from its folder.
+
+## Command line usage
 
     $ itunes_csv --help
     Usage: itunes_csv [options]
