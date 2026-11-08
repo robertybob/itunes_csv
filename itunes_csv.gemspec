@@ -16,4 +16,6 @@ Gem::Specification.new do |gem|
   gem.version       = ItunesCsv::VERSION
   gem.add_runtime_dependency "andyw8-itunes-library", "~> 0.1.3"
   gem.add_runtime_dependency "csv"
+  gem.add_development_dependency "minitest"
+  gem.add_development_dependency "rake"
 end
