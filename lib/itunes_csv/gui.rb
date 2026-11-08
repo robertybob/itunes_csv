@@ -1,4 +1,5 @@
 require "itunes_csv"
+require "itunes_csv/tooltips"
 
 begin
   require "libui"
@@ -24,12 +25,24 @@ module ItunesCsv
 
       build_window
       UI.control_show(@window)
+      add_tooltips
       main_loop
     ensure
       UI.uninit if init_error.nil?
     end
 
     private
+
+    # Hovering over a field shows its description (Windows only). Done after
+    # the window is shown, once each checkbox is in its final place.
+    def add_tooltips
+      @tooltips = Tooltips.new(UI.control_handle(@window))
+      @checkboxes.each do |name, checkbox|
+        @tooltips.add(UI.control_handle(checkbox), ItunesCsv::Fields[name].description)
+      end
+    rescue StandardError, Fiddle::DLError
+      # Tooltips are a nice-to-have; never let them stop the window opening.
+    end
 
     def build_window
       @window = UI.new_window("iTunes CSV Export", 900, 600, 0)
