@@ -23,6 +23,32 @@ module ItunesCsv
     DEFAULT_PATHS.map { |p| File.expand_path(p) }.find { |p| File.file?(p) }
   end
 
+  # Builds CSV text for the music tracks in the library at library_path, with
+  # one column per field (in the given order) and a header row.
+  # Returns [csv_string, track_count]. Raises ArgumentError for unknown fields
+  # and Errno::ENOENT if the library file does not exist.
+  def self.export(library_path, fields)
+    fields = fields.map(&:to_s)
+    unknown = fields - valid_fields
+    raise ArgumentError, "Unknown field#{'s' if unknown.size > 1}: #{unknown.join(', ')}" unless unknown.empty?
+    raise ArgumentError, "No fields selected" if fields.empty?
+    raise Errno::ENOENT, library_path unless File.file?(library_path)
+
+    library = ITunes::Library.load(library_path)
+    methods = fields.map(&:to_sym)
+    count = 0
+
+    csv_string = CSV.generate do |csv|
+      csv << fields
+      library.music.tracks.each do |t|
+        csv << methods.map { |m| t.send(m) }
+        count += 1
+      end
+    end
+
+    [csv_string, count]
+  end
+
   class CommandLine
     # Returns a process exit status (0 on success) so callers and tests can check it.
     def self.invoke(args, out: $stdout, err: $stderr)
@@ -70,15 +96,7 @@ module ItunesCsv
         return 1
       end
 
-      library = ITunes::Library.load(library_path)
-      fields = options[:fields].map(&:to_sym)
-
-      csv_string = CSV.generate do |csv|
-        csv << options[:fields]
-        library.music.tracks.each do |t|
-          csv << fields.map { |f| t.send(f) }
-        end
-      end
+      csv_string, _count = ItunesCsv.export(library_path, options[:fields])
 
       if options[:output]
         File.write(options[:output], csv_string)

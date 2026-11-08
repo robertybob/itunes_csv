@@ -105,3 +105,35 @@ describe ItunesCsv::CommandLine do
     ENV["HOME"] = old
   end
 end
+
+describe "ItunesCsv.export" do
+  FIXTURE_PATH = File.expand_path("fixtures/library.xml", __dir__)
+
+  it "returns CSV text and the number of tracks" do
+    csv_string, count = ItunesCsv.export(FIXTURE_PATH, ["name", "year"])
+
+    rows = CSV.parse(csv_string)
+    _(rows.first).must_equal ["name", "year"]
+    _(rows[1]).must_equal ["Life In Technicolor", "2008"]
+    _(count).must_equal rows.size - 1
+    _(count).must_be :>, 0
+  end
+
+  it "accepts field names as symbols" do
+    csv_string, _count = ItunesCsv.export(FIXTURE_PATH, [:artist])
+    _(CSV.parse(csv_string)[1]).must_equal ["Coldplay"]
+  end
+
+  it "raises for unknown fields" do
+    err = _ { ItunesCsv.export(FIXTURE_PATH, ["name", "bogus"]) }.must_raise ArgumentError
+    _(err.message).must_equal "Unknown field: bogus"
+  end
+
+  it "raises when no fields are given" do
+    _ { ItunesCsv.export(FIXTURE_PATH, []) }.must_raise ArgumentError
+  end
+
+  it "raises when the library file is missing" do
+    _ { ItunesCsv.export("does-not-exist.xml", ["name"]) }.must_raise Errno::ENOENT
+  end
+end
