@@ -11,7 +11,7 @@ module ItunesCsv
   # pick the library file, tick the fields you want, and click Export.
   class Gui
     UI = LibUI
-    COLUMNS = 3
+    COLUMNS = 5
     DEFAULT_FIELDS = %w[name artist].freeze
 
     def self.run
@@ -32,7 +32,7 @@ module ItunesCsv
     private
 
     def build_window
-      @window = UI.new_window("iTunes CSV Export", 640, 520, 0)
+      @window = UI.new_window("iTunes CSV Export", 900, 600, 0)
       UI.window_set_margined(@window, 1)
       UI.window_on_closing(@window) do
         UI.quit
@@ -70,39 +70,62 @@ module ItunesCsv
       group
     end
 
-    def fields_group
-      group = UI.new_group("2. Fields to include")
-      UI.group_set_margined(group, 1)
+    # Where each section goes in the checkbox grid: one row of sections per
+    # entry, each section given as [name, first column, number of columns].
+    # The three small sections share a row to keep the window short.
+    LAYOUT = [
+      [["Song info", 0, COLUMNS]],
+      [["File and technical", 0, COLUMNS]],
+      [["Play status flags", 0, 1], ["Rating details", 1, 2], ["Other media types", 3, 2]],
+    ].freeze
 
+    def fields_group
       box = UI.new_vertical_box
       UI.box_set_padded(box, 1)
 
-      grid = UI.new_grid
-      UI.grid_set_padded(grid, 1)
-      fields = ItunesCsv.valid_fields
-      rows = (fields.size + COLUMNS - 1) / COLUMNS
-      @checkboxes = {}
-      # Fill down each column first so the list reads alphabetically top to bottom.
-      fields.each_with_index do |field, i|
-        checkbox = UI.new_checkbox(field)
-        UI.checkbox_set_checked(checkbox, DEFAULT_FIELDS.include?(field) ? 1 : 0)
-        UI.grid_append(grid, checkbox, i / rows, i % rows, 1, 1, 1, UI::AlignFill, 0, UI::AlignFill)
-        @checkboxes[field] = checkbox
-      end
-      UI.box_append(box, grid, 1)
-
-      buttons = UI.new_horizontal_box
-      UI.box_set_padded(buttons, 1)
+      header = UI.new_horizontal_box
+      UI.box_set_padded(header, 1)
+      UI.box_append(header, UI.new_label("2. Fields to include"), 1)
       select_all = UI.new_button("Select all")
       UI.button_on_clicked(select_all) { set_all_checked(1) }
       select_none = UI.new_button("Select none")
       UI.button_on_clicked(select_none) { set_all_checked(0) }
-      UI.box_append(buttons, select_all, 0)
-      UI.box_append(buttons, select_none, 0)
-      UI.box_append(box, buttons, 0)
+      UI.box_append(header, select_all, 0)
+      UI.box_append(header, select_none, 0)
+      UI.box_append(box, header, 0)
 
-      UI.group_set_child(group, box)
-      group
+      # All sections share one grid so their columns line up.
+      @grid = UI.new_grid
+      UI.grid_set_padded(@grid, 1)
+      @checkboxes = {}
+      top = 0
+      LAYOUT.each do |sections|
+        grid_add(UI.new_horizontal_separator, 0, top, COLUMNS)
+        top += 1
+        sections.each { |name, left, width| grid_add(UI.new_label(name), left, top, width) }
+        top += 1
+        top += sections.map { |name, left, width| add_checkboxes(name, left, top, width) }.max
+      end
+      UI.box_append(box, @grid, 1)
+      box
+    end
+
+    # Adds a section's checkboxes to the grid, filling down each column first so
+    # they read in the same order as the README table. Returns the rows used.
+    def add_checkboxes(section, left, top, width)
+      fields = ItunesCsv::Fields.in_section(section)
+      rows = (fields.size + width - 1) / width
+      fields.each_with_index do |field, i|
+        checkbox = UI.new_checkbox(field.name)
+        UI.checkbox_set_checked(checkbox, DEFAULT_FIELDS.include?(field.name) ? 1 : 0)
+        grid_add(checkbox, left + i / rows, top + i % rows)
+        @checkboxes[field.name] = checkbox
+      end
+      rows
+    end
+
+    def grid_add(control, left, top, width = 1)
+      UI.grid_append(@grid, control, left, top, width, 1, 1, UI::AlignFill, 0, UI::AlignFill)
     end
 
     def export_row
