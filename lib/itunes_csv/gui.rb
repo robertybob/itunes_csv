@@ -1,5 +1,6 @@
 require "itunes_csv"
 require "itunes_csv/tooltips"
+require "itunes_csv/file_dialogs"
 
 begin
   require "libui"
@@ -74,7 +75,7 @@ module ItunesCsv
 
       browse = UI.new_button("Browse…")
       UI.button_on_clicked(browse) do
-        path = take_string(UI.open_file(@window))
+        path = ask_library_path
         UI.entry_set_text(@path_entry, path) if path
       end
       UI.box_append(row, browse, 0)
@@ -170,6 +171,8 @@ module ItunesCsv
         return error("No library file", "Choose your iTunes Library XML file first (use Browse…).")
       elsif !File.file?(library_path)
         return error("Library file not found", "Could not find:\n#{library_path}")
+      elsif File.extname(library_path).downcase != ".xml"
+        return error("Not an XML file", "The iTunes library file must be an .xml file, such as \"iTunes Library.xml\".\n\nYou chose:\n#{library_path}")
       elsif fields.empty?
         return error("No fields selected", "Tick at least one field to include in the CSV.")
       end
@@ -199,12 +202,38 @@ module ItunesCsv
       end
     end
 
-    # Shows the Save dialog. Returns the chosen path (with .csv added if it has
-    # no extension), or nil if the user cancelled.
+    # Shows the Open dialog, limited to .xml files. Starts in the folder of the
+    # path already in the box, or the usual iTunes folder. Returns the chosen
+    # path, or nil if the user cancelled.
+    def ask_library_path
+      current = take_string(UI.entry_text(@path_entry)).to_s.strip
+      candidates = current.empty? ? [] : [File.dirname(current)]
+      candidates += [File.expand_path("~/Music/iTunes"), File.expand_path("~/Music")]
+      start_dir = candidates.find { |d| File.directory?(d) }
+      path = native_dialog { FileDialogs.open_xml(window_handle, initial_dir: start_dir) }
+      path = take_string(UI.open_file(@window)) if path == :unsupported
+      path&.tr("/", "\\")
+    end
+
+    # Shows the Save dialog, with "CSV file (*.csv)" as the file type. Returns
+    # the chosen path (with .csv added if it has no extension), or nil if the
+    # user cancelled.
     def ask_save_path
-      path = take_string(UI.save_file(@window))
+      path = native_dialog { FileDialogs.save_csv(window_handle) }
+      path = take_string(UI.save_file(@window)) if path == :unsupported
       return nil if path.nil? || path.empty?
       File.extname(path).empty? ? "#{path}.csv" : path
+    end
+
+    # Runs a Windows dialog, falling back to LibUI's if it can't be shown.
+    def native_dialog
+      yield
+    rescue StandardError, Fiddle::DLError
+      :unsupported
+    end
+
+    def window_handle
+      UI.control_handle(@window)
     end
 
     def finish(status_text)
