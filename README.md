@@ -2,6 +2,10 @@
 
 Export iTunes Library XML data to CSV
 
+![The iTunes CSV Export window: choose your library file, tick the fields you want, then click Export CSV](docs/gui.png)
+
+*The Windows app. See [Windows app](#windows-app-no-command-line-needed) for how to get it.*
+
 # Why?
 
 I wanted to do a clean-up of my library. iTunes allows you to copy and paste from iTunes into a spreadsheet, but this only includes visible columns. For non-visible columns such as location you need to parse the XML.
