@@ -12,66 +12,82 @@ module ItunesCsv
     '~/Music/iTunes/iTunes Music Library.xml',
   ].freeze
 
+  # Track methods that are not exportable fields.
+  NON_FIELD_METHODS = [:[], :to_hash, :inspect].freeze
+
+  def self.valid_fields
+    (ITunes::Track.public_instance_methods(false) - NON_FIELD_METHODS).map(&:to_s).sort
+  end
+
   def self.default_path
     DEFAULT_PATHS.map { |p| File.expand_path(p) }.find { |p| File.file?(p) }
   end
 
   class CommandLine
-    def self.invoke(args)
-      options = {}
+    # Returns a process exit status (0 on success) so callers and tests can check it.
+    def self.invoke(args, out: $stdout, err: $stderr)
+      options = { fields: ['name', 'artist'], path: nil, output: nil }
 
       opts = OptionParser.new do |opts|
-        options[:fields] = ['name', 'artist']
+        opts.banner = "Usage: itunes_csv [options]"
+
         opts.on( '-f', '--fields a,b,c', Array, "List of fields (default: #{options[:fields].join(',')})" ) do |list|
           options[:fields] = list
         end
 
-        options[:path] = nil
         opts.on( '-p', '--path PATH', "Path to iTunes XML file (default: first found of #{DEFAULT_PATHS.join(', ')})" ) do |path|
           options[:path] = path
         end
 
-        options[:output] = nil
         opts.on( '-o', '--output FILE', "Output to FILE instead of stdout (default: stdout)" ) do |file|
           options[:output] = file
         end
       end
 
-      opts.parse!(args)
+      begin
+        opts.parse!(args)
+      rescue OptionParser::ParseError => e
+        err.puts e.message
+        err.puts opts
+        return 1
+      end
+
+      unknown = options[:fields] - ItunesCsv.valid_fields
+      unless unknown.empty?
+        err.puts "Unknown field#{'s' if unknown.size > 1}: #{unknown.join(', ')}"
+        err.puts "Valid fields: #{ItunesCsv.valid_fields.join(', ')}"
+        return 1
+      end
 
       library_path = options[:path] ? File.expand_path(options[:path]) : ItunesCsv.default_path
       if library_path.nil?
-        $stderr.puts "Could not find an iTunes library XML file. Looked in:"
-        DEFAULT_PATHS.each { |p| $stderr.puts "  #{File.expand_path(p)}" }
-        $stderr.puts "Use --path to point at your library file."
-        exit 1
+        err.puts "Could not find an iTunes library XML file. Looked in:"
+        DEFAULT_PATHS.each { |p| err.puts "  #{File.expand_path(p)}" }
+        err.puts "Use --path to point at your library file."
+        return 1
       elsif !File.file?(library_path)
-        $stderr.puts "iTunes library file not found: #{library_path}"
-        exit 1
+        err.puts "iTunes library file not found: #{library_path}"
+        return 1
       end
 
       library = ITunes::Library.load(library_path)
+      fields = options[:fields].map(&:to_sym)
 
       csv_string = CSV.generate do |csv|
         csv << options[:fields]
         library.music.tracks.each do |t|
-          row = options[:fields].map do |f|
-            unless t.respond_to?(f.to_sym)
-              puts "Unknown field: #{f}"
-              exit
-            end
-            t.send(f.to_sym)
-          end
-          csv << row
+          csv << fields.map { |f| t.send(f) }
         end
       end
 
       if options[:output]
         File.write(options[:output], csv_string)
-        puts "CSV written to #{options[:output]}"
+        out.puts "CSV written to #{options[:output]}"
       else
-        puts csv_string
+        out.puts csv_string
       end
+
+      0
     end
   end
 end

@@ -4,4 +4,4 @@ $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 
 require 'itunes_csv'
 
-ItunesCsv::CommandLine.invoke ARGV
+exit ItunesCsv::CommandLine.invoke(ARGV)
