@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Application Version</key>
+	<string>12.13</string>
+	<key>Major Version</key>
+	<integer>1</integer>
+	<key>Minor Version</key>
+	<integer>1</integer>
+	<key>Playlists</key>
+	<array>
+		<dict>
+			<key>All Items</key>
+			<true/>
+			<key>Music</key>
+			<true/>
+			<key>Name</key>
+			<string>Music</string>
+			<key>Playlist ID</key>
+			<integer>1</integer>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key>
+					<integer>1</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key>
+					<integer>2</integer>
+				</dict>
+			</array>
+		</dict>
+	</array>
+	<key>Tracks</key>
+	<dict>
+		<key>1</key>
+		<dict>
+			<key>Album</key>
+			<string>Test Album</string>
+			<key>Album Artist</key>
+			<string>Various Artists</string>
+			<key>Album Rating</key>
+			<integer>60</integer>
+			<key>Album Rating Computed</key>
+			<true/>
+			<key>Artist</key>
+			<string>Test Artist</string>
+			<key>Artwork Count</key>
+			<integer>1</integer>
+			<key>BPM</key>
+			<integer>128</integer>
+			<key>Bit Rate</key>
+			<integer>320</integer>
+			<key>Comments</key>
+			<string>A comment, with a comma</string>
+			<key>Compilation</key>
+			<true/>
+			<key>Composer</key>
+			<string>Test Composer</string>
+			<key>Content Rating</key>
+			<string>us-tv|TV-MA|600|</string>
+			<key>Date Added</key>
+			<date>2021-01-02T03:04:05Z</date>
+			<key>Date Modified</key>
+			<date>2021-06-07T08:09:10Z</date>
+			<key>Disabled</key>
+			<true/>
+			<key>Disc Count</key>
+			<integer>2</integer>
+			<key>Disc Number</key>
+			<integer>1</integer>
+			<key>Disliked</key>
+			<true/>
+			<key>Equalizer</key>
+			<string>Rock</string>
+			<key>Explicit</key>
+			<true/>
+			<key>Favorited</key>
+			<true/>
+			<key>Genre</key>
+			<string>Classical</string>
+			<key>Grouping</key>
+			<string>Morning</string>
+			<key>Has Video</key>
+			<true/>
+			<key>Kind</key>
+			<string>MPEG audio file</string>
+			<key>Location</key>
+			<string>file://localhost/C:/Users/me/Music/AC%2BDC%20Test%20Song.mp3</string>
+			<key>Loved</key>
+			<true/>
+			<key>Movement Count</key>
+			<integer>4</integer>
+			<key>Movement Name</key>
+			<string>Allegro con brio</string>
+			<key>Movement Number</key>
+			<integer>1</integer>
+			<key>Movie</key>
+			<true/>
+			<key>Name</key>
+			<string>Test Song</string>
+			<key>Persistent ID</key>
+			<string>0123456789ABCDEF</string>
+			<key>Play Count</key>
+			<integer>7</integer>
+			<key>Play Date UTC</key>
+			<date>2022-02-03T04:05:06Z</date>
+			<key>Podcast</key>
+			<true/>
+			<key>Protected</key>
+			<true/>
+			<key>Purchased</key>
+			<true/>
+			<key>Rating</key>
+			<integer>80</integer>
+			<key>Rating Computed</key>
+			<true/>
+			<key>Release Date</key>
+			<date>2020-05-01T07:00:00Z</date>
+			<key>Sample Rate</key>
+			<integer>44100</integer>
+			<key>Size</key>
+			<integer>5000000</integer>
+			<key>Skip Count</key>
+			<integer>2</integer>
+			<key>Skip Date</key>
+			<date>2022-03-04T05:06:07Z</date>
+			<key>Sort Album</key>
+			<string>Album, Test</string>
+			<key>Sort Album Artist</key>
+			<string>Artists, Various</string>
+			<key>Sort Artist</key>
+			<string>Artist, Test</string>
+			<key>Sort Composer</key>
+			<string>Composer, Test</string>
+			<key>Sort Name</key>
+			<string>Song, Test</string>
+			<key>Start Time</key>
+			<integer>1000</integer>
+			<key>Stop Time</key>
+			<integer>240000</integer>
+			<key>TV Show</key>
+			<true/>
+			<key>Total Time</key>
+			<integer>245000</integer>
+			<key>Track Count</key>
+			<integer>12</integer>
+			<key>Track ID</key>
+			<integer>1</integer>
+			<key>Track Number</key>
+			<integer>3</integer>
+			<key>Track Type</key>
+			<string>File</string>
+			<key>Volume Adjustment</key>
+			<integer>-50</integer>
+			<key>Work</key>
+			<string>Symphony No. 5</string>
+			<key>Year</key>
+			<integer>2020</integer>
+		</dict>
+		<key>2</key>
+		<dict>
+			<key>Kind</key>
+			<string>MPEG audio file</string>
+			<key>Name</key>
+			<string>Bare Song</string>
+			<key>Persistent ID</key>
+			<string>FEDCBA9876543210</string>
+			<key>Total Time</key>
+			<integer>1000</integer>
+			<key>Track ID</key>
+			<integer>2</integer>
+		</dict>
+	</dict>
+</dict>
+</plist>

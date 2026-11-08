@@ -1,4 +1,5 @@
 require "itunes_csv/version"
+require "itunes_csv/fields"
 require "itunes/library"
 require "csv"
 require 'optparse'
@@ -12,11 +13,9 @@ module ItunesCsv
     '~/Music/iTunes/iTunes Music Library.xml',
   ].freeze
 
-  # Track methods that are not exportable fields.
-  NON_FIELD_METHODS = [:[], :to_hash, :inspect].freeze
-
+  # Names of every exportable field, in section order. See ItunesCsv::Fields.
   def self.valid_fields
-    (ITunes::Track.public_instance_methods(false) - NON_FIELD_METHODS).map(&:to_s).sort
+    Fields.names
   end
 
   def self.default_path
@@ -35,13 +34,13 @@ module ItunesCsv
     raise Errno::ENOENT, library_path unless File.file?(library_path)
 
     library = ITunes::Library.load(library_path)
-    methods = fields.map(&:to_sym)
+    columns = fields.map { |f| Fields[f] }
     count = 0
 
     csv_string = CSV.generate do |csv|
       csv << fields
       library.music.tracks.each do |t|
-        csv << methods.map { |m| t.send(m) }
+        csv << columns.map { |c| c.value(t) }
         count += 1
       end
     end
