@@ -24,8 +24,8 @@ In the window:
    place. Otherwise click **Browse…** and choose your `iTunes Library.xml` file
    (see [Where it looks for your library](#where-it-looks-for-your-library)).
 2. **Fields to include**: tick the columns you want in the spreadsheet. They are grouped into
-   sections, and [Fields](#fields) below explains each one. **Select all** and
-   **Select none** tick or clear them all.
+   sections. Hover over a field to see what it contains, or see [Fields](#fields) below.
+   **Select all** and **Select none** tick or clear them all.
 3. Click **Export CSV…**, choose where to save the file, and it tells you how many tracks were
    exported. The CSV opens in Excel or any spreadsheet program.
 
@@ -85,92 +85,92 @@ where older ones use `loved?`).
 
 | Field | What it is |
 |---|---|
-| `name` | Song title |
-| `artist` | Artist |
-| `album_artist` | Album artist |
-| `album` | Album |
-| `composer` | Composer |
-| `genre` | Genre |
-| `grouping` | Grouping |
-| `year` | Year |
-| `release_date` | Release date |
-| `number` | Track number |
-| `track_count` | Number of tracks on the disc (the "of 12" in "3 of 12") |
-| `disc_number` | Disc number |
-| `disc_count` | Number of discs (the "of 2" in "1 of 2") |
-| `compilation?` | Part of a compilation album |
-| `total_time` | Length in seconds |
-| `bpm` | Beats per minute |
-| `comments` | Comments |
-| `work` | Work (classical music) |
-| `movement_name` | Movement name (classical music) |
-| `movement_number` | Movement number (classical music) |
-| `movement_count` | Number of movements (classical music) |
-| `explicit?` | Marked as explicit |
-| `content_rating` | Content rating, as stored by iTunes |
-| `date_added` | Date and time added to the library |
-| `play_count` | Number of plays |
-| `last_played_at` | Date and time last played |
-| `skip_count` | Number of skips |
-| `last_skipped_at` | Date and time last skipped |
-| `rating` | Star rating, 0-100 (20 = 1 star, 100 = 5 stars) |
-| `album_rating` | Album star rating, 0-100 |
-| `sort_name` | Title used for sorting, if different |
-| `sort_artist` | Artist used for sorting, if different |
-| `sort_album_artist` | Album artist used for sorting, if different |
-| `sort_album` | Album used for sorting, if different |
-| `sort_composer` | Composer used for sorting, if different |
+| `name` | The song's title. |
+| `artist` | The singer or band. |
+| `album_artist` | The main artist for the whole album, e.g. "Various Artists" on a compilation. Often empty if it's the same as the artist. |
+| `album` | The name of the album the song is on. |
+| `composer` | Who wrote the song. |
+| `genre` | The style of music, e.g. Rock or Pop. |
+| `grouping` | A label you can type in to group songs together, e.g. "Wedding". Usually empty. |
+| `year` | The year the song came out. |
+| `release_date` | The full date the song came out. Usually only filled in for songs from the iTunes Store. |
+| `number` | The song's position on the album (its track number). |
+| `track_count` | How many tracks are on the album or disc (the "12" in "track 3 of 12"). |
+| `disc_number` | Which disc the song is on, for albums with more than one CD. |
+| `disc_count` | How many discs the album has (the "2" in "disc 1 of 2"). |
+| `compilation?` | Whether the song is on a "various artists" style album, such as a soundtrack or a greatest-hits collection. |
+| `total_time` | How long the song is, in seconds (e.g. 245 = 4 minutes 5 seconds). |
+| `bpm` | How fast the song is, in beats per minute. Usually empty unless you or another app filled it in. |
+| `comments` | Any notes typed into the song's Comments box. |
+| `work` | For classical music: the name of the whole piece, e.g. "Symphony No. 5". |
+| `movement_name` | For classical music: the name of this part of the piece, e.g. "Allegro con brio". |
+| `movement_number` | For classical music: which part of the piece this is (1, 2, 3...). |
+| `movement_count` | For classical music: how many parts the whole piece has. |
+| `explicit?` | Whether the song is marked as having explicit lyrics. |
+| `content_rating` | An age rating stored with the song, if there is one. Usually empty for music. |
+| `date_added` | When the song was added to your iTunes library. |
+| `play_count` | How many times you've played the song. |
+| `last_played_at` | When you last played the song. |
+| `skip_count` | How many times you skipped the song soon after it started. |
+| `last_skipped_at` | When you last skipped the song. |
+| `rating` | Your star rating for the song, from 0 to 100: 20 = 1 star, 40 = 2 stars, up to 100 = 5 stars. |
+| `album_rating` | The star rating for the whole album, from 0 to 100 (20 per star). |
+| `sort_name` | If set, the title iTunes uses when sorting alphabetically instead of the real one (e.g. to ignore "The"). Usually empty. |
+| `sort_artist` | If set, the artist name iTunes uses when sorting, e.g. "Beatles" for "The Beatles". Usually empty. |
+| `sort_album_artist` | If set, the album artist name iTunes uses when sorting. Usually empty. |
+| `sort_album` | If set, the album name iTunes uses when sorting. Usually empty. |
+| `sort_composer` | If set, the composer name iTunes uses when sorting. Usually empty. |
 
 ### File and technical
 
 | Field | What it is |
 |---|---|
-| `location` | File location as a URL (file://localhost/...) |
-| `location_path` | File location as a normal path |
-| `kind` | File type, e.g. "MPEG audio file" or "AAC audio file" |
-| `size` | File size in bytes |
-| `bit_rate` | Bit rate in kbps, e.g. 256 |
-| `sample_rate` | Sample rate in Hz, e.g. 44100 |
-| `date_modified` | Date and time the file was last changed |
-| `track_type` | Where the track lives, e.g. File, URL or Remote |
-| `purchased?` | Bought from the iTunes Store |
-| `protected?` | Copy-protected (DRM) |
-| `artwork_count` | Number of artwork images attached |
-| `volume_adjustment` | Volume adjustment set for this song (-255 to 255) |
-| `equalizer` | Equalizer preset set for this song |
-| `start_time` | Custom start time in milliseconds |
-| `stop_time` | Custom stop time in milliseconds |
-| `id` | iTunes' internal track number (can change if the library is rebuilt) |
-| `persistent_id` | iTunes' permanent unique ID for the track |
+| `location` | Where the song's file is, written as a web-style address (file://...) with spaces shown as %20. |
+| `location_path` | Where the song's file is, as a normal folder path, e.g. C:/Users/You/Music/song.mp3. |
+| `kind` | The type of audio file, e.g. "MPEG audio file" (an MP3) or "AAC audio file". |
+| `size` | How big the file is, in bytes (1,000,000 bytes is about 1 MB). |
+| `bit_rate` | The audio quality in kbps. Higher means better sound and bigger files; 256 or 320 is high quality. |
+| `sample_rate` | A technical audio detail in Hz. Usually 44100, which is CD quality. |
+| `date_modified` | When the song's file or details were last changed. |
+| `track_type` | Where the song lives: "File" for a file on your computer, or "URL" / "Remote" for streams and cloud songs. |
+| `purchased?` | Whether the song was bought from the iTunes Store. |
+| `protected?` | Whether the file is copy-protected so it only plays in iTunes. Common for songs bought before 2009. |
+| `artwork_count` | How many pictures (such as album covers) are attached to the song. |
+| `volume_adjustment` | The volume setting from the song's Options, from -255 (quietest) to 255 (loudest). 0 or empty means no change. |
+| `equalizer` | The equalizer preset chosen for this song, e.g. "Rock". Usually empty. |
+| `start_time` | If you set the song to start partway in, where it starts, in milliseconds (1000 = 1 second). |
+| `stop_time` | If you set the song to stop early, where it stops, in milliseconds (1000 = 1 second). |
+| `id` | A number iTunes uses for the song in this file. It can change if the library is rebuilt, so don't rely on it. |
+| `persistent_id` | A code iTunes uses to identify the song. It never changes, so it's useful for matching songs between exports. |
 
 ### Play status flags
 
 | Field | What it is |
 |---|---|
-| `played?` | Played at least once |
-| `unplayed?` | Never played, or marked as unplayed in iTunes |
-| `disabled?` | Unticked in iTunes (skipped when playing through) |
+| `played?` | Whether you've played the song at least once. |
+| `unplayed?` | The opposite of played?: true if you've never played the song, or it's marked as unplayed. |
+| `disabled?` | Whether the song's tick box is unticked in iTunes, which makes iTunes skip it when playing through a list. |
 
 ### Rating details
 
 | Field | What it is |
 |---|---|
-| `rating_computed?` | Star rating was worked out by iTunes, not set by you |
-| `album_rating_computed?` | Album rating was worked out by iTunes, not set by you |
-| `loved?` | Loved (older iTunes versions) |
-| `favorited?` | Favorited (newer iTunes versions) |
-| `disliked?` | Disliked |
+| `rating_computed?` | True if the song's stars weren't set by you, but filled in by iTunes from the album's rating. |
+| `album_rating_computed?` | True if the album's stars weren't set by you, but worked out by iTunes from its songs' ratings. |
+| `loved?` | Whether you've marked the song with a heart ("Love"). Used by older versions of iTunes. |
+| `favorited?` | Whether you've marked the song as a Favorite. Used by newer versions of iTunes instead of Love. |
+| `disliked?` | Whether you've marked the song as "Dislike", so iTunes plays it less. |
 
 ### Other media types
 
 | Field | What it is |
 |---|---|
-| `audio?` | Audio (not video) |
-| `video?` | Has video, e.g. a music video |
-| `movie?` | Movie |
-| `tv_show?` | TV show |
-| `podcast?` | Podcast |
-| `audiobook?` | Audiobook (Audible) |
+| `audio?` | Whether the item is audio rather than video. Always true for songs. |
+| `video?` | Whether the item has video, e.g. a music video. |
+| `movie?` | Whether the item is a movie. Normally false, as only music is exported. |
+| `tv_show?` | Whether the item is a TV show. Normally false, as only music is exported. |
+| `podcast?` | Whether the item is a podcast. Normally false, as only music is exported. |
+| `audiobook?` | Whether the item is an Audible audiobook. Normally false, as only music is exported. |
 
 ## Running the tests
 
